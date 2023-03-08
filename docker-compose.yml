@@ -1,27 +1,21 @@
-version: '3.3'
-
-volumes:
-  postgres_data:
-    driver: local
-  shimi:
-    driver: local
+version: '3.1'
 
 services:
 
-    postgres:
-        image: postgres:13.2
-        restart: unless-stopped
-        ports:
-            - "5433:5432"
-        environment:
-            POSTGRES_DB: <DATABASENAME>
-            POSTGRES_USER: <DATABASEUSER>
-            POSTGRES_PASSWORD: <DATABASE PASSWORD>
-            PGDATA: /var/lib/postgresql/data/pgdata
-        volumes:
-            - postgres_data:/var/lib/postgresql/data
-        networks:
-            - local-net
-
-networks:
-  local-net:
+  db:
+    build:
+      context: ./Docker/mysql
+      dockerfile: Dockerfile
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: DATABASE_NAME
+      MYSQL_USER: USER
+      MYSQL_PASSWORD: PASSWORD
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - '3306:3306
+    volumes:
+       - db_data:/var/lib/mysql
+volumes:
+  my-db:
