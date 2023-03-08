@@ -1,0 +1,27 @@
+version: '3.3'
+
+volumes:
+  postgres_data:
+    driver: local
+  shimi:
+    driver: local
+
+services:
+
+    postgres:
+        image: postgres:13.2
+        restart: unless-stopped
+        ports:
+            - "5433:5432"
+        environment:
+            POSTGRES_DB: <DATABASENAME>
+            POSTGRES_USER: <DATABASEUSER>
+            POSTGRES_PASSWORD: <DATABASE PASSWORD>
+            PGDATA: /var/lib/postgresql/data/pgdata
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        networks:
+            - local-net
+
+networks:
+  local-net:
